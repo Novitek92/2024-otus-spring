@@ -9,7 +9,7 @@ import java.io.IOException;
 @ComponentScan(basePackages = "ru.diasoft")
 public class OtusSpringApplication {
 
-	public static void main(String[] args) throws CsvValidationException, IOException {
+	public static void main(String[] args) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(OtusSpringApplication.class);
 		QuestionService service = context.getBean(QuestionService.class);
 		service.testingStudent();
