@@ -9,39 +9,27 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @DisplayName("класс QuestionDaoImplTest")
-@ExtendWith(MockitoExtension.class)
 class QuestionDaoImplTest {
-
-    @Mock
-    private QuestionDaoImpl questionDao;
-
-    @DisplayName("должен вернуть мапу вопросов с ответом")
+    @DisplayName("должен вернуть вопросы с ответом")
     @Test
-    void getQuestions() throws CsvValidationException, IOException {
-        assertThat(questionDao.getQuestions()).isNotNull();
+    void getQuestions() {
+        QuestionDaoImpl questionDao = new QuestionDaoImpl();
+        assertNotNull(questionDao.getQuestions("/questions.csv"));
     }
 
-    @Test
-    void readQuestion() {
-        assertThat(questionDao.readQuestion(any())).isNotNull();
-    }
-
-    @DisplayName("должен считывать CSV")
-    @Test
-    void readCsvFile() throws CsvValidationException, IOException {
-        assertNotNull(QuestionDaoImpl.readCsvFile("questions.csv"));
-    }
-
-    @DisplayName("должен выбросить ошибку, если не нашел файл")
+    @DisplayName("должен выбросить ошибку, если не нашел файл или не смог прочитать")
     @Test
     void readCsvFileException() {
-        assertThrows(IOException.class, () -> QuestionDaoImpl.readCsvFile("src/questions.csv"));
+        QuestionDaoImpl questionDao = new QuestionDaoImpl();
+        assertThrows(RuntimeException.class, () -> questionDao.getQuestions("/questions123.csv"));
     }
 
 }

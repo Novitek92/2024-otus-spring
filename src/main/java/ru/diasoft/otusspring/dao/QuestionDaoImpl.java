@@ -18,45 +18,48 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Component
-@PropertySource("/application.properties")
 public class QuestionDaoImpl implements QuestionDao{
-
-    @Value("${filePath}")
-    private String filePath;
     @Override
-    public Map<Question, String> getQuestions() throws CsvValidationException, IOException {
+    public List<Question> getQuestions(String filePath) {
         return readQuestion(readCsvFile(filePath));
     }
 
-    public Map<Question, String> readQuestion(List<String> data) {
-        Map<Question, String> questions = new HashMap<>();
+    private static List<Question> readQuestion(List<String> data) {
+        List<Question> questions = new ArrayList<>();
         if (!CollectionUtils.isEmpty(data)) {
             for (String string : data) {
                 String[] parts = string.split(";");
-                Question question = new Question(parts[0]);
-                questions.put(question, parts[1]);
+                Question question = new Question(parts[0], parts[1]);
+                questions.add(question);
             }
         }
         return questions;
     }
 
-    public static List<String> readCsvFile(String filePath) throws IOException, CsvValidationException {
-        ClassPathResource resource = new ClassPathResource(filePath);
-        InputStream inputStream = resource.getInputStream();
-        Reader reader = new BufferedReader(new InputStreamReader(inputStream));
+    private static List<String> readCsvFile(String filePath) {
         List<String> data = new ArrayList<>();
+        try {
+            ClassPathResource resource = new ClassPathResource(filePath);
+            InputStream inputStream = resource.getInputStream();
+            Reader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-        CSVParser parser = new CSVParserBuilder()
-                .withSeparator(',')
-                .withIgnoreQuotations(true)
-                .build();
+            CSVParser parser = new CSVParserBuilder()
+                    .withSeparator(',')
+                    .withIgnoreQuotations(true)
+                    .build();
 
-        CSVReader csvReader = new CSVReaderBuilder(reader)
-                .withSkipLines(0)
-                .withCSVParser(parser)
-                .build();
+            CSVReader csvReader = new CSVReaderBuilder(reader)
+                    .withSkipLines(0)
+                    .withCSVParser(parser)
+                    .build();
 
-        Collections.addAll(data, csvReader.readNext());
+            Collections.addAll(data, csvReader.readNext());
+
+
+        } catch (IOException | CsvValidationException e) {
+            throw new RuntimeException("Ошибка чтения файла, либо такого файла " + filePath + " не сущестует");
+        }
+
         return data;
     }
 
