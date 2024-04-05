@@ -6,3 +6,5 @@ spring:
     basename: messages
     encoding: UTF-8
     fallback-to-system-locale: true
+  main:
+    allow-circular-references: true
