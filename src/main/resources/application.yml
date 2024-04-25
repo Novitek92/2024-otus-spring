@@ -1,0 +1,10 @@
+daoproperties:
+  filePath: questions.csv
+
+spring:
+  messages:
+    basename: messages
+    encoding: UTF-8
+    fallback-to-system-locale: true
+  main:
+    allow-circular-references: true
