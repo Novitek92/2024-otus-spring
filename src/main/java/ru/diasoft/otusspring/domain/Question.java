@@ -6,5 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class Question {
-    private final String data;
+    private final String question;
+    private final String answer;
 }

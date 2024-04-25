@@ -2,17 +2,28 @@ package ru.diasoft.otusspring.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.diasoft.otusspring.dao.QuestionDao;
-import ru.diasoft.otusspring.dao.QuestionDaoImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.io.ByteArrayInputStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
 @DisplayName("класс QuestionServiceImpl")
 class QuestionServiceImplTest {
-    @DisplayName("должен выбросить ошибку, если не указано имя файла")
+    @Autowired
+    private QuestionServiceImpl questionService;
+
+    @DisplayName("должен тестировать студента")
     @Test
     void testingStudent() {
-        QuestionDao dao = new QuestionDaoImpl();
+        String data = "Виктория Волкова\n2\n6\n9\n100\n1";
+        ByteArrayInputStream testIn = new ByteArrayInputStream(data.getBytes());
+        System.setIn(testIn);
 
-        assertThrows(IllegalArgumentException.class, dao::getQuestions);
+        assertThat(questionService.testingStudent()).isTrue();
+
     }
+
 }
