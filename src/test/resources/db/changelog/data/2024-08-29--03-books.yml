@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      author: vvolkova
+      id: 1
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: War and Peace
+              - column:
+                  name: description
+                  value: An epic novel describing Russian society during the era of the wars against Napoleon in 1805-1812. The epilogue of the novel brings the narrative up to 1820
+              - column:
+                  name: authorId
+                  value: 1
+              - column:
+                  name: genreId
+                  value: 1
